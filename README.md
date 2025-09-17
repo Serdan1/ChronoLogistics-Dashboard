@@ -58,38 +58,56 @@ Este proyecto ha sido desarrollado paso a paso para crear el **ChronoLogistics D
 - Backup local: `streamlit run main.py` en Codespaces.
 
 ```mermaid
-graph TD
-    A[Usuario] --> B[Interfaz Streamlit]
-    B --> C[Precog]
-    B --> D[Chronos]
-    B --> E[K-Lang]
-    C --> F[Datos Climáticos<br>(Viento, Lluvia)]
-    C --> G[Simulador de Riesgo]
-    C --> H[Mapa de Calor]
-    D --> I[Datos Estratégicos<br>(Fortaleza Verde, Búnker Tecnológico)]
-    D --> J[Visualizador de Imágenes]
-    D --> K[Mapa Estratégico]
-    E --> L[Protocolos<br>(VÍSPERA, CÓDIGO ROJO, RENACIMIENTO)]
-    E --> M[Simulador de Protocolos]
-    F --> N[API AEMET]
-    I --> O[Base de Datos]
-    subgraph "ChronoLogistics Dashboard"
-        C
-        D
-        E
+flowchart TD
+
+    subgraph "Usuario"
+        U[Usuario]
     end
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style B fill:#bbf,stroke:#333,stroke-width:2px
-    style C fill:#bfb,stroke:#333,stroke-width:2px
-    style D fill:#bfb,stroke:#333,stroke-width:2px
-    style E fill:#bfb,stroke:#333,stroke-width:2px
-    style F fill:#ddf,stroke:#333,stroke-width:2px
-    style G fill:#ddf,stroke:#333,stroke-width:2px
-    style H fill:#ddf,stroke:#333,stroke-width:2px
-    style I fill:#ddf,stroke:#333,stroke-width:2px
-    style J fill:#ddf,stroke:#333,stroke-width:2px
-    style K fill:#ddf,stroke:#333,stroke-width:2px
-    style L fill:#ddf,stroke:#333,stroke-width:2px
-    style M fill:#ddf,stroke:#333,stroke-width:2px
-    style N fill:#ffd,stroke:#333,stroke-width:2px
-    style O fill:#ffd,stroke:#333,stroke-width:2px
+
+    subgraph "Interfaz (Streamlit)"
+        G[Streamlit]
+        G_UI[Interfaz Web]
+        G_Precog[Precog]
+        G_Chronos[Chronos]
+        G_KLang[K-Lang]
+    end
+
+    subgraph "Servicios/Datos"
+        S_Clima[ClimaService]
+        S_Estrategia[EstrategiaService]
+        S_Protocolos[ProtocolosService]
+    end
+
+    subgraph "Repositorios (Almacenamiento)"
+        R_Clima[ClimaRepository<br>datos_climaticos.json]
+        R_Estrategia[EstrategiaRepository<br>estrategias.json]
+        R_Protocolos[ProtocolosRepository<br>protocolos.json]
+    end
+
+    %% Flujo de interacción del usuario
+    U -->|Accede| G_UI
+    G_UI -->|Navega| G
+    G -->|Verifica| R_Clima
+    G -->|Verifica| R_Estrategia
+    G -->|Verifica| R_Protocolos
+
+    %% Precog
+    G_UI -->|Monitorea| G_Precog
+    G_Precog -->|Obtiene Datos| S_Clima
+    S_Clima -->|Consulta| R_Clima
+    S_Clima -->|Simula Riesgo| G_Precog
+    G_Precog -->|Muestra Mapa| G_UI
+
+    %% Chronos
+    G_UI -->|Estrategias| G_Chronos
+    G_Chronos -->|Obtiene Datos| S_Estrategia
+    S_Estrategia -->|Consulta| R_Estrategia
+    S_Estrategia -->|Muestra Imágenes| G_Chronos
+    G_Chronos -->|Actualiza Mapa| G_UI
+
+    %% K-Lang
+    G_UI -->|Protocolos| G_KLang
+    G_KLang -->|Obtiene Protocolos| S_Protocolos
+    S_Protocolos -->|Consulta| R_Protocolos
+    S_Protocolos -->|Simula Protocolo| G_KLang
+    G_KLang -->|Muestra Acciones| G_UI

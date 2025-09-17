@@ -15,7 +15,7 @@ def test_get_protocolo_activo(klang):
     assert len(acciones) > 0
 
 def test_protocolos_umbrales(klang):
-    """Testea que los umbrales activan el protocolo correcto."""
+    """Testea que los umbrales activan el protocolo correcto."
     assert klang.get_protocolo_activo(95, 60)[0] == "CÓDIGO ROJO"
     assert klang.get_protocolo_activo(70, 30)[0] == "VÍSPERA"
     assert klang.get_protocolo_activo(40, 10)[0] == "RENACIMIENTO"
@@ -27,4 +27,3 @@ def test_protocolos_definidos(klang):
         assert "disparador" in klang.protocolos[protocolo]
         assert "acciones" in klang.protocolos[protocolo]
         assert isinstance(klang.protocolos[protocolo]["acciones"], list)
-        

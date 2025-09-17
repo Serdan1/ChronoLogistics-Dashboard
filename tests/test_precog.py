@@ -21,7 +21,9 @@ def test_predecir_riesgo_valores_logicos(precog):
     assert "ALTO" in result_alto or "CRÍTICO" in result_alto
 
 def test_puntos_criticos(precog):
-    """Testea que los puntos críticos tienen el formato correcto."""
+    """Testea que los puntos críticos y el Triángulo del Peligro tienen el formato correcto."""
     assert len(precog.puntos_criticos) == 5
     assert all(col in precog.puntos_criticos for col in ['nombre', 'lat', 'lon', 'riesgo'])
     assert all(0 <= r <= 100 for r in precog.puntos_criticos['riesgo'])
+    assert len(precog.triangle) == 3
+    assert all(col in precog.triangle for col in ['nombre', 'lat', 'lon'])

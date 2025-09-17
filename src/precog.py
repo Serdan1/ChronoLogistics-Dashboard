@@ -18,8 +18,8 @@ class Precog:
             'lon': [-3.7026, -3.7003, -3.6690, -3.7757, -3.8249],
             'riesgo': [80, 65, 90, 70, 55]  # Riesgo ficticio (0-100)
         })
-        # Triángulo del Peligro (3 puntos más críticos)
-        self.triangle = self.puntos_criticos.nlargest(3, 'riesgo')[['lat', 'lon']]
+        # Triángulo del Peligro (3 puntos más críticos, incluyendo nombres)
+        self.triangle = self.puntos_criticos.nlargest(3, 'riesgo')[['nombre', 'lat', 'lon']]
 
     def predecir_riesgo(self, velocidad_viento, intensidad_lluvia):
         """Calcula el nivel de riesgo basado en umbrales AEMET."""
@@ -42,15 +42,14 @@ class Precog:
     def render_map(self):
         """Renders a Plotly map with heatmap, Triángulo del Peligro, and key locations."""
         st.subheader("Mapa de Calor de Riesgo")
-        st.markdown("**Descripción**: Mapa interactivo de Madrid mostrando áreas de riesgo climático (heatmap). "
-                    "El **Triángulo del Peligro** resalta los 3 puntos más críticos (rojo). "
-                    "Marcadores indican el Búnker Tecnológico (Villaviciosa de Odón) y la Fortaleza Verde (Cercedilla).")
+        st.markdown("**Monitorización en directo de áreas de riesgo climático**")
 
         # Crear mapa con Plotly
         fig = px.scatter_mapbox(
             self.puntos_criticos,
             lat="lat", lon="lon", size="riesgo", color="riesgo",
-            color_continuous_scale="hot", size_max=20, zoom=10,
+            color_continuous_scale=["blue", "red"],  # Escala de azul a rojo
+            size_max=20, zoom=10,
             center={"lat": self.madrid_center[0], "lon": self.madrid_center[1]},
             mapbox_style="carto-positron"  # Estilo claro y profesional
         )
@@ -62,19 +61,23 @@ class Precog:
             mode='lines+markers', line=dict(width=2, color='red'), name='Triángulo del Peligro'
         ))
 
-        # Añadir marcadores para Búnker y Fortaleza
+        # Añadir marcadores para Búnker y Fortaleza sin texto en el mapa
         fig.add_trace(go.Scattermapbox(
             lat=[self.bunker[0], self.fortaleza[0]],
             lon=[self.bunker[1], self.fortaleza[1]],
-            mode='markers+text',
-            marker=dict(size=15, color=['blue', 'green']),
-            text=['Búnker Tecnológico', 'Fortaleza Verde'],
-            textposition='top center',
-            name='Ubicaciones Estratégicas'
+            mode='markers',
+            marker=dict(size=15, color=['blue', 'green'])
         ))
 
-        fig.update_layout(margin={"r":0, "t":0, "l":0, "b":0}, height=500)
+        fig.update_layout(margin={"r":0, "t":0, "l":0, "b":0}, height=500, showlegend=False)
         st.plotly_chart(fig)
+
+        # Textos debajo del mapa
+        st.markdown("🔵 **Búnker Tecnológico**: Ubicado en Villaviciosa de Odón, marcado con un punto azul en el mapa.")
+        st.markdown("🟢 **Fortaleza Verde**: Ubicada en Cercedilla, marcada con un punto verde en el mapa.")
+        st.markdown("**Zonas Críticas (Triángulo del Peligro)**:")
+        for nombre in self.triangle['nombre']:
+            st.markdown(f"- {nombre}")
 
     def render_simulator(self):
         """Renders an interactive risk simulator with sliders."""

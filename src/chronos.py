@@ -19,7 +19,7 @@ class Chronos:
         """Devuelve el texto defensivo para la estrategia seleccionada."""
         if estrategia == "Fortaleza Verde":
             return ("**Fortaleza Verde**: Ubicada en Cercedilla, esta estrategia prioriza la sostenibilidad, "
-                    "integr vasoconductores de cero emisiones con IA para optimizar rutas en Madrid. "
+                    "integrando logística de cero emisiones con IA para optimizar rutas en Madrid. "
                     "Reduce un 40% las emisiones para 2040, atrayendo inversores ESG y asegurando resiliencia climática.")
         else:
             return ("**Búnker Tecnológico**: Situado en Villaviciosa de Odón, este enfoque refuerza la ciberseguridad "
@@ -39,11 +39,16 @@ class Chronos:
         st.subheader("Visualizador de Futuros")
         st.markdown("**Descripción**: Muestra la imagen generada (GAN) para la estrategia seleccionada, "
                     "junto con una defensa argumentada de su valor para ChronoLogistics.")
-        if os.path.exists(self.imagenes[estrategia]):
-            st.image(self.imagenes[estrategia], caption=f"Visión: {estrategia}", use_column_width=True)
-        else:
-            st.warning(f"Imagen no encontrada: {self.imagenes[estrategia]}")
-        st.markdown(self.get_defensa(estrategia))
+
+        # Usar columnas para mostrar imagen a la izquierda y texto a la derecha
+        col1, col2 = st.columns([1, 2])
+        with col1:
+            if os.path.exists(self.imagenes[estrategia]):
+                st.image(self.imagenes[estrategia], caption=f"Visión: {estrategia}", width=300)  # Tamaño reducido
+            else:
+                st.warning(f"Imagen no encontrada: {self.imagenes[estrategia]}")
+        with col2:
+            st.markdown(self.get_defensa(estrategia))
 
     def render_map(self):
         """Renders un mapa con las ubicaciones del Búnker y la Fortaleza."""

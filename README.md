@@ -57,6 +57,8 @@ Este proyecto ha sido desarrollado paso a paso para crear el **ChronoLogistics D
 - URL de demo: `https://huggingface.co/spaces/Danserrano1/ChronoLogistics-Dashboard-3`.
 - Backup local: `streamlit run main.py` en Codespaces.
 
+
+## Diagrama del Funcionamiento del Sistema
 ```mermaid
 flowchart TD
 
@@ -111,3 +113,4 @@ flowchart TD
     S_Protocolos -->|Consulta| R_Protocolos
     S_Protocolos -->|Simula Protocolo| G_KLang
     G_KLang -->|Muestra Acciones| G_UI
+

@@ -57,3 +57,39 @@ Este proyecto ha sido desarrollado paso a paso para crear el **ChronoLogistics D
 - URL de demo: `https://huggingface.co/spaces/Danserrano1/ChronoLogistics-Dashboard-3`.
 - Backup local: `streamlit run main.py` en Codespaces.
 
+```mermaid
+graph TD
+    A[Usuario] --> B[Interfaz Streamlit]
+    B --> C[Precog]
+    B --> D[Chronos]
+    B --> E[K-Lang]
+    C --> F[Datos Climáticos<br>(Viento, Lluvia)]
+    C --> G[Simulador de Riesgo]
+    C --> H[Mapa de Calor]
+    D --> I[Datos Estratégicos<br>(Fortaleza Verde, Búnker Tecnológico)]
+    D --> J[Visualizador de Imágenes]
+    D --> K[Mapa Estratégico]
+    E --> L[Protocolos<br>(VÍSPERA, CÓDIGO ROJO, RENACIMIENTO)]
+    E --> M[Simulador de Protocolos]
+    F --> N[API AEMET]
+    I --> O[Base de Datos]
+    subgraph "ChronoLogistics Dashboard"
+        C
+        D
+        E
+    end
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bfb,stroke:#333,stroke-width:2px
+    style D fill:#bfb,stroke:#333,stroke-width:2px
+    style E fill:#bfb,stroke:#333,stroke-width:2px
+    style F fill:#ddf,stroke:#333,stroke-width:2px
+    style G fill:#ddf,stroke:#333,stroke-width:2px
+    style H fill:#ddf,stroke:#333,stroke-width:2px
+    style I fill:#ddf,stroke:#333,stroke-width:2px
+    style J fill:#ddf,stroke:#333,stroke-width:2px
+    style K fill:#ddf,stroke:#333,stroke-width:2px
+    style L fill:#ddf,stroke:#333,stroke-width:2px
+    style M fill:#ddf,stroke:#333,stroke-width:2px
+    style N fill:#ffd,stroke:#333,stroke-width:2px
+    style O fill:#ffd,stroke:#333,stroke-width:2px
